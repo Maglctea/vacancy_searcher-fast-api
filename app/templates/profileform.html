@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
+    <title>Изменение профиля</title>
+</head>
+<body>
+<div class="container">
+    <h2 class="my-5">Изменение профиля</h2>
+
+    <form id="edit-profile-form" method="post">
+        <!--        <div class="form-group">-->
+        <!--          <label for="first-name">First Name</label>-->
+        <!--          <input type="text" class="form-control" id="first-name" placeholder="Enter your first name">-->
+        <!--        </div>-->
+
+        <!--        <div class="form-group">-->
+        <!--          <label for="last-name">Last Name</label>-->
+        <!--          <input type="text" class="form-control" id="last-name" placeholder="Enter your last name">-->
+        <!--        </div>-->
+
+        <div class="form-group">
+            <label for="professional_role">Название специальности</label>
+            <input type="text" class="form-control" id="professional_role" name="professional_role"
+                   placeholder="Специальность" {% if user_profile.salary_from %}
+                   value="{{user_profile.professional_role}}" {% endif%}} required>
+        </div>
+
+        <div class="form-group">
+            <label for="grade">Грейд</label>
+            <select class="form-control" id="grade" required name="grade">
+                <option value="">Выберите свой грейд</option>
+                {% for key, value in grades.items() %}
+                <option value="{{ key }}"
+                        {% if user_profile.grade== key %}
+                        selected
+                        {% endif %}>
+                    {{ value }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="work_type">Формат работы</label>
+            <select class="form-control" id="work_type" name="work_type">
+                <option value="">Все</option>
+                {% for work_type in work_types %}
+                <option value="{{ work_type }}"
+                        {% if user_profile.work_type==work_type %} selected {% endif %}>
+                    {{ work_type }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="region">Регион</label>
+            <select class="js-example-basic-single form-control" id="region" name="region">
+                {% for city in cities %}
+                {% if city == user_profile.region %}
+                <option value="{{city}}" selected="selected">{{city}}</option>
+                {% else %}
+                <option value="{{city}}">{{city}}</option>
+                {% endif%}}
+                {% endfor %}
+                {% if user_profile.region not in cities %}
+                <option value="{{user_profile.region}}" selected="selected">{{user_profile.region}}</option>
+                {% endif %}
+            </select>
+
+        </div>
+
+        <div class="form-group">
+            <label for="salary_from">Зарплата от</label>
+            <input type="number" class="form-control" id="salary_from" placeholder="1000" name="salary_from" {% if
+                   user_profile.salary_from %} value="{{user_profile.salary_from}}" {% endif%}}>
+        </div>
+
+        <div class="form-group">
+            <label for="salary_to">Зарплата до</label>
+            <input type="number" class="form-control" id="salary_to" placeholder="10000" name="salary_to" {% if
+                   user_profile.salary_to %} value="{{user_profile.salary_to}}" {% endif%}}>
+        </div>
+
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="ready_for_relocation" name="ready_for_relocation" {% if
+                   user_profile.ready_for_relocation %} checked {% endif%}}>
+            <label class="form-check-label" for="ready_for_relocation">Готов к переезду?</label>
+        </div>
+        <button id="btn-submit" class="btn btn-primary d-none">Изменить</button>
+    </form>
+</div>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="{{ url_for('static', path='/app.js') }}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    // form.addEventListener("submit", function (event) {
+    //     console.log(updatedData)
+    // });
+
+    $(document).ready(function () {
+        $('#region').select2(
+            {
+                language: "ru",
+                placeholder: "Введите город",
+            }
+        );
+    });
+</script>
+</body>
+</html>
